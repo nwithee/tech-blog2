@@ -5,33 +5,21 @@ const withAuth = require("../../utils/auth");
 
 router.post("/", withAuth, (req, res) => {
   const body = req.body;
-  Post.create({ body, user_id: req.session.userId})
+  console.log(req.session.user_id);
+  Post.create({ ...body, user_id: req.session.user_id })
     .then(newPost => {
       res.json(newPost);
     })
     .catch(err => {
       res.status(500).json(err);
     });
-})
-
-router.post('/', (req, res) => {
-  // expects {title: 'Taskmaster goes public!', post_url: 'https://taskmaster.com/press', user_id: 1}
-  Post.create({
-    title: req.body.title,
-    content: req.body.content,
-    user_id: req.session.user_id
-  })
-    .then(dbPostData => res.json(dbPostData))
-    .catch(err => {
-      console.log(err);
-      res.status(500).json(err);
-    });
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', withAuth, (req, res) => {
   Post.update(
     {
-      title: req.body.title
+      title: req.body.title,
+      content: req.body.content
     },
     {
       where: {

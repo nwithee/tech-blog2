@@ -1,12 +1,11 @@
 const editFormHandler = async function(event) {
     event.preventDefault();
-
     
     const title = document.getElementById('post-title');
     const content = document.getElementById('post-content');
-    const postId = document.getElementById('post-id')
+    const post_id = document.getElementById('post-id')
 
-    fetch("/api/post/" + postId.value, {
+    fetch("/api/posts/" + post_id.value, {
         method: "put", 
         body: JSON.stringify({
             title: title.value,
